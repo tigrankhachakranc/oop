@@ -2,8 +2,14 @@
 #define C_PARSER_HPP
 
 #include <iostream>
-#include "Token.hpp"
+#include <vector>
+#include <sstream>
+#include "Command.hpp"
 
+using String = std::string;
+using Istream = std::istream;
+using VectorOfStrings = std::vector<String>;
+using IsStringStream = std::istringstream;
 
 class CParser
 {
@@ -12,9 +18,9 @@ private:
 
 public:
     CParser(Istream &);
-    ~CParser();
-    CCommand commandParse(CToken);
+    CCommand commandParse(IsStringStream);
     CCommand invalidCommand(String);
+    VectorOfStrings tokenize(IsStringStream&);
 };
 
 #endif // C_PARSER_HPP
