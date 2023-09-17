@@ -1,26 +1,38 @@
 #include "CParser.hpp"
 
-
 CParser::CParser(Istream &str) : Stream(str) {}
 
-CCommand CParser::commandParse(CToken token)
+CCommand CParser::commandParse(IsStringStream token)
 {
 
     while (true)
     {
-        // CDisplay read;
-        // String commandString = read.getNextCommandString();
-        // String command = createCommandFromInputToken(token);
-        CCommand cmd;
-        String command = token.getType() + cmd.addArguments(); //////////////////
-        cmd = cmd.find(command);
-        if (cmd.isValid())
+        VectorOfStrings tokens = tokenize(token);
+
+        String command = "";
+
+        for (const String &t : tokens)
+        {
+            command += t + " ";
+        }
+
+        if (!command.empty())
+        {
+            command.pop_back();
+        }
+
+        CCommandRegister cmdrg;
+        CCommand cmd = cmdrg.findCommand(command);
+
+        cmd.addArguments(tokens);
+
+        if (cmd.isValid(command))
         {
             return cmd;
         }
         else
         {
-            return invalidCommand("Invalid command : " + cmd);
+            return invalidCommand("Invalid command: " + command);
         }
     }
 }
@@ -29,7 +41,21 @@ CCommand CParser::commandParse(CToken token)
 //  token=add
 // key=-op1 value=1
 
+VectorOfStrings CParser::tokenize(IsStringStream &input)
+{
+    VectorOfStrings tokens;
+
+    String token;
+
+    while (input >> token)
+    {
+        tokens.push_back(token);
+    }
+
+    return tokens;
+}
+
 CCommand CParser::invalidCommand(String msg)
 {
-    std::cout<<msg;
+    std::cout << msg;
 }
