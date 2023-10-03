@@ -3,10 +3,7 @@
 
 enum class ActionType
 {
-    Set,
-    Reset,
     Create,
-    Present,
     Add,
     Remove
 };
