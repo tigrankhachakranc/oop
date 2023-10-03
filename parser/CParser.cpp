@@ -1,61 +1,36 @@
 #include "CParser.hpp"
 
-CParser::CParser(Istream &str) : Stream(str) {}
-
-CCommand CParser::commandParse(IsStringStream token)
+ActionType CParser::getAction(std::stringstream &expr) 
 {
-
-    while (true)
+    std::string action;
+    expr >> action;
+    std::transform(action.begin(), action.end(), action.begin(), ::tolower);
+    if (m_actionsTranslater.find(action) == m_actionsTranslater.end())
     {
-        VectorOfStrings tokens = tokenize(token);
-
-        String command = "";
-
-        for (const String &t : tokens)
-        {
-            command += t + " ";
-        }
-
-        if (!command.empty())
-        {
-            command.pop_back();
-        }
-
-        CCommandRegister cmdrg;
-        CCommand cmd = cmdrg.findCommand(command);
-
-        cmd.addArguments(tokens);
-
-        if (cmd.isValid(command))
-        {
-            return cmd;
-        }
-        else
-        {
-            return invalidCommand("Invalid command: " + command);
-        }
-    }
-}
-
-// add -op1 1 -op2 2
-//  token=add
-// key=-op1 value=1
-
-VectorOfStrings CParser::tokenize(IsStringStream &input)
-{
-    VectorOfStrings tokens;
-
-    String token;
-
-    while (input >> token)
-    {
-        tokens.push_back(token);
+        throw std::logic_error("ERROR: Invalid action\n");
     }
 
-    return tokens;
+    return m_actionsTranslater.at(action);
 }
 
-CCommand CParser::invalidCommand(String msg)
+Token CParser::getToken(std::stringstream &expr) 
 {
-    std::cout << msg;
+    Token currToken;
+    currToken.m_actionType = getAction(expr);
+
+    return currToken;
+}
+
+void CParser::Parse(std::stringstream &expr)
+{
+    m_tokenizer.tokenize(expr);
+}
+
+CParser::CParser() : m_actionsTranslater
+{
+    {"create", ActionType::Create},
+        {"add", ActionType::Add},
+    {
+        "remove", ActionType::Remove
+    }
 }

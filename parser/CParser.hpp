@@ -4,23 +4,27 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
-#include "Command.hpp"
+#include <unordered_map>
+#include <algorithm>
+#include <exception>
+#include "Tokenizer.hpp"
+#include "Token.hpp"
 
-using String = std::string;
-using Istream = std::istream;
-using VectorOfStrings = std::vector<String>;
-using IsStringStream = std::istringstream;
 
 class CParser
 {
-private:
-    Istream &Stream;
 
 public:
-    CParser(Istream &);
-    CCommand commandParse(IsStringStream);
-    CCommand invalidCommand(String);
-    VectorOfStrings tokenize(IsStringStream&);
+    void Parse(std::stringstream &expr);
+
+private:
+    CParser();
+    Token getToken(std::stringstream &expr) ;
+    ActionType getAction(std::stringstream &expr) ;
+
+private:
+    const std::unordered_map<std::string, ActionType> m_actionsTranslater;
+    Tokenizer &m_tokenizer;
 };
 
 #endif // C_PARSER_HPP
