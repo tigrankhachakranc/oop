@@ -4,7 +4,7 @@ Director::Director() : currentIndex(-1) {}
 
 void Director::undo() {
     if (currentIndex >= 0) {
-        actions[currentIndex].undo();
+        actions[currentIndex].undo(); // TK: Action can't have undo method, it have only exec()
         currentIndex--;
     }
 }
