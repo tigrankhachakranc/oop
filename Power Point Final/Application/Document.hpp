@@ -16,7 +16,7 @@ private:
 public:
     void addSlide(const Slide &slide);
     void delSlide(const Id &id);
-    VectorOfStrings getSlideTitles();
+    VectorOfStrings getSlideTitles(); // Is slide title sam as Id or different thing?
     Slide getSlideById(const Id &id);
 };
 
