@@ -2,7 +2,7 @@
 
 void Controller::run()
 {
-    bool isExit = true; // TK: May be wise versa? isExit = false, otherwise your loop never will be executed 
+    bool isExit = true; // TK: May be wice versa? isExit = false, otherwise your loop never will be executed 
     Command cmd;
     while (!isExit)
     {
