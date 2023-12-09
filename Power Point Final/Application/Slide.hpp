@@ -13,8 +13,8 @@ class Slide
 public:
     void addItem(const Item &item);
     void delItem(const Id &id);
-    vectorOfItems getItems();
-    Item getItemById(const Id &id);
+    vectorOfItems getItems(); // TK: returns copy of itms, not good
+    Item getItemById(const Id &id); // TK: returns a copy, not good
 
 private:
     vectorOfItems items;
